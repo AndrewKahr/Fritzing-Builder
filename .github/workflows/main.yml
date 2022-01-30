@@ -47,8 +47,11 @@ jobs:
             echo '::set-output name=libgit2Tag::v0.28.5'
           } else
           {
+            echo '::set-output name=fritzingTag::${{ github.event.inputs.fritzingTag }}'
+            echo '::set-output name=boostTag::${{ github.event.inputs.boostTag }}'
             $boostPath = "${{ github.event.inputs.boostTag }}".replace('-', '_').replace('.', '_')
             echo '::set-output name=boostPath::$boostPath'
+            echo '::set-output name=libgit2Tag::${{ github.event.inputs.libgit2Tag }}'
           }
       
       - name: Show Inputs
@@ -65,12 +68,14 @@ jobs:
           repository: fritzing/fritzing-app
           path: fritzing-app
           ref: '${{ steps.buildParameters.outputs.fritzingTag }}'
+          submodules: recursive
       
       - name: Clone Fritzing-Parts
         uses: actions/checkout@v2
         with:
           repository: fritzing/fritzing-parts
           path: fritzing-parts
+          submodules: recursive
       
       - name: Clone Boost
         uses: actions/checkout@v2
@@ -78,14 +83,21 @@ jobs:
           repository: boostorg/boost
           path: '${{ steps.buildParameters.outputs.boostPath }}'
           ref: '${{ steps.buildParameters.outputs.boostTag }}'
+          submodules: recursive
       
-      - run: dir .\boost_1_78_0\
+      - name: Setup Boost
+        shell: cmd
+        run: |
+          cd '${{ steps.buildParameters.outputs.boostPath }}'
+          bootstrap
+          b2 headers
       
       - name: Clone libgit2
         uses: actions/checkout@v2
         with:
           repository: libgit2/libgit2
           path: libgit2
+          submodules: recursive
       
       - name: Inspect Workspace
         run: dir $ENV:GITHUB_WORKSPACE
