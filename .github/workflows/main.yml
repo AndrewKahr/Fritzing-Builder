@@ -79,7 +79,7 @@ jobs:
           path: '${{ steps.buildParameters.outputs.boostPath }}'
           ref: '${{ steps.buildParameters.outputs.boostTag }}'
       
-      - run: dir /boost_1_78_0
+      - run: dir
       
       - name: Clone libgit2
         uses: actions/checkout@v2
