@@ -60,6 +60,12 @@ jobs:
           echo "Boost Version: ${{ steps.buildParameters.outputs.boostTag }}"
           echo "Boost Path: ${{ steps.buildParameters.outputs.boostPath }}"
           echo "LibGit2 Version: ${{ steps.buildParameters.outputs.libgit2Tag }}"
+          
+      - uses: actions/cache@v2
+        id: cache-boost
+        with:
+          path: ${{ env.GITHUB_WORKSPACE }}/${{ steps.buildParameters.outputs.boostPath }}
+          key: ${{ runner.os }}-${{ steps.buildParameters.outputs.boostPath }}
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Clone Fritzing-App
@@ -79,6 +85,7 @@ jobs:
       
       - name: Clone Boost
         uses: actions/checkout@v2
+        if: steps.cache-boost.outputs.cache-hit != 'true'
         with:
           repository: boostorg/boost
           path: '${{ steps.buildParameters.outputs.boostPath }}'
