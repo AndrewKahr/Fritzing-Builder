@@ -107,7 +107,7 @@ jobs:
         shell: cmd
         run: |
           %comspec% /k "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" amd64
-          fritzing-app/tools/release_fritzing.bat '${{ steps.buildParameters.outputs.fritzingTag }}' 64 2017
+          call fritzing-app/tools/release_fritzing.bat '${{ steps.buildParameters.outputs.fritzingTag }}' 64 2017
 
       - name: Show Disk Usage
         if: always()
