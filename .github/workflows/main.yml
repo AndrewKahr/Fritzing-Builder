@@ -66,6 +66,12 @@ jobs:
         with:
           path: ${{ env.GITHUB_WORKSPACE }}/${{ steps.buildParameters.outputs.boostPath }}
           key: ${{ runner.os }}-${{ steps.buildParameters.outputs.boostPath }}
+          
+      - uses: actions/cache@v2
+        id: cache-libgit2
+        with:
+          path: ${{ env.GITHUB_WORKSPACE }}/libgit2
+          key: ${{ runner.os }}-${{ steps.buildParameters.outputs.libgit2Tag }}
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Clone Fritzing-App
@@ -106,16 +112,15 @@ jobs:
           cd %GITHUB_WORKSPACE%
       
       - name: Clone libgit2
+        if: steps.cache-libgit2.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: libgit2/libgit2
           path: libgit2
           submodules: recursive
       
-      - name: Inspect Workspace
-        run: dir $ENV:GITHUB_WORKSPACE
-      
       - name: Build libgit2
+        if: steps.cache-libgit2.outputs.cache-hit != 'true'
         run: |
           cd libgit2
           mkdir build64
