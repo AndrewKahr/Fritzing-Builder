@@ -99,6 +99,8 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
+        with:
+          tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
       
       - name: Show Disk Usage
         if: always()
