@@ -31,7 +31,7 @@ jobs:
   # This workflow contains a single job called "build"
   buildWindows:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -103,11 +103,9 @@ jobs:
           version: 5.12.7
           dir: c:/
         
-      - name: Setup VS Developer Command Prompt
-        uses: ilammy/msvc-dev-cmd@v1
-        
       - name: Build Fritzing x64
         run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
           fritzing-app/tools/release_fritzing.bat '${{ steps.buildParameters.outputs.fritzingTag }}' 64 2017
 
       - name: Show Disk Usage
