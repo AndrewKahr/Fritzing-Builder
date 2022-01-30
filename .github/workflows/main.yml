@@ -27,11 +27,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Setup Build Parameters
+        id: buildParameters
+        run: |
+          if (-Not "${{ github.event.inputs.tag }}")
+          {
+            # Push doesn't get workflow_dispatch values
+            echo '::set-output name=tag::0.9.6'
+          }
+    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
           repository: fritzing/fritzing-app
           path: fritzing-app
+          tag: ${{ steps.buildParameters.outputs.tag }}
       
       - uses: actions/checkout@v2
         with:
