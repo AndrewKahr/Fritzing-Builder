@@ -106,7 +106,7 @@ jobs:
       - name: Build Fritzing x64
         shell: cmd
         run: |
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
+          %comspec% /k "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
           fritzing-app/tools/release_fritzing.bat '${{ steps.buildParameters.outputs.fritzingTag }}' 64 2017
 
       - name: Show Disk Usage
