@@ -99,7 +99,10 @@ jobs:
         run: |
           cd ${{ steps.buildParameters.outputs.boostPath }}
           bootstrap
-          b2 headers
+          echo "Bootstrap Done"
+          ./b2 headers
+          echo "Headers Generated"
+          dir boost
           cd %GITHUB_WORKSPACE%
       
       - name: Clone libgit2
