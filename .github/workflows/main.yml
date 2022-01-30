@@ -85,6 +85,16 @@ jobs:
           repository: libgit2/libgit2
           path: libgit2
       
-      - run: dir $ENV:GITHUB_WORKSPACE
+      - name: Inspect Workspace
+        run: dir $ENV:GITHUB_WORKSPACE
       
+      - name: Build libgit2
+        run: |
+          cd libgit2
+          mkdir build
+          cd build
+          cmake -DBUILD_SHARED_LIBS=OFF ..
+          cmake --build .
+          cd $ENV:GITHUB_WORKSPACE
 
+      - run: pwd
