@@ -91,6 +91,7 @@ jobs:
           cd '${{ steps.buildParameters.outputs.boostPath }}'
           bootstrap
           b2 headers
+          cd %GITHUB_WORKSPACE%
       
       - name: Clone libgit2
         uses: actions/checkout@v2
