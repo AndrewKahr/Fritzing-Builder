@@ -92,6 +92,8 @@ jobs:
           ref: '${{ steps.buildParameters.outputs.boostTag }}'
           submodules: recursive
       
+      - run: dir
+      
       - name: Setup Boost
         shell: cmd
         run: |
