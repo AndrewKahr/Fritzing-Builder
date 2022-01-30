@@ -113,7 +113,7 @@ jobs:
         shell: cmd
         run: |
           cd ${{ steps.buildParameters.outputs.boostPath }}
-          ./b2 headers
+          b2 headers
           dir boost
           cd %GITHUB_WORKSPACE%
       
