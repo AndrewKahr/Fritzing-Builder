@@ -99,9 +99,17 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
-        with:
-          tools: 'tools_qtcreator,qt.tools.qtcreator'
-      
+        
+      - name: Show Qt Dir
+        run: Get-ChildItem -Path C:\QT -Recurse
+        
+      - name: Setup VS Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        
+      - name: Build Fritzing
+        run: |
+          .\fritzing-app/tools/release_fritzing.bat
+
       - name: Show Disk Usage
         if: always()
         run: get-PSDrive
