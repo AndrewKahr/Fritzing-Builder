@@ -106,6 +106,7 @@ jobs:
           cd ${{ steps.buildParameters.outputs.boostPath }}
           bootstrap
           echo "Bootstrap Done"
+          pwd
           ./b2 headers
           echo "Headers Generated"
           dir boost
