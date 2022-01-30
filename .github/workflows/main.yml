@@ -100,15 +100,20 @@ jobs:
       
       - run: dir
       
-      - name: Setup Boost
+      - name: Bootstrap Boost
+        if: steps.cache-boost.outputs.cache-hit != 'true'
         shell: cmd
         run: |
           cd ${{ steps.buildParameters.outputs.boostPath }}
           bootstrap
-          echo "Bootstrap Done"
-          pwd
+          cd %GITHUB_WORKSPACE%
+          
+      - name: Setup Boost
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        shell: cmd
+        run: |
+          cd ${{ steps.buildParameters.outputs.boostPath }}
           ./b2 headers
-          echo "Headers Generated"
           dir boost
           cd %GITHUB_WORKSPACE%
       
