@@ -41,7 +41,7 @@ jobs:
         with:
           repository: fritzing/fritzing-app
           path: fritzing-app
-          tag: ${{ steps.buildParameters.outputs.tag }}
+          ref: '${{ steps.buildParameters.outputs.tag }}'
       
       - uses: actions/checkout@v2
         with:
