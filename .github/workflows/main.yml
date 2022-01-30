@@ -91,10 +91,10 @@ jobs:
       - name: Build libgit2
         run: |
           cd libgit2
-          mkdir build
-          cd build
-          cmake -DBUILD_SHARED_LIBS=OFF ..
-          cmake --build .
+          mkdir build64
+          cd build64
+          cmake ..
+          cmake --build . --config Release
           cd $ENV:GITHUB_WORKSPACE
 
       - name: Install Qt
