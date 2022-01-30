@@ -13,10 +13,18 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      tag:
-        description: 'Version tag to build'
+      fritzingTag:
+        description: 'Fritzing version tag to build'
         required: true
         default: '0.9.6'
+      boostTag:
+        description: 'Boost version tag to use'
+        required: true
+        default: 'boost-1.78.0'
+      libgit2:
+        description: 'libgit2 version tag to use'
+        required: true
+        default: 'v0.28.5'
         
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,22 +38,53 @@ jobs:
       - name: Setup Build Parameters
         id: buildParameters
         run: |
-          if (-Not "${{ github.event.inputs.tag }}")
+          if (-Not "${{ github.event.inputs.fritzingTag }}")
           {
             # Push doesn't get workflow_dispatch values
-            echo '::set-output name=tag::0.9.6'
+            echo '::set-output name=fritzingTag::0.9.6'
+            echo '::set-output name=boostTag::boost-1.78.0'
+            echo '::set-output name=boostPath::boost_1_78_0'
+            echo '::set-output name=libgit2Tag::v0.28.5'
+          } else
+          {
+            $boostPath = "${{ github.event.inputs.boostTag }}".replace('-', '_').replace('.', '_')
+            echo '::set-output name=boostPath::$boostPath'
           }
+      
+      - name: Show Inputs
+        run: |
+          echo "Fritzing Version: ${{ steps.buildParameters.outputs.fritzingTag }}"
+          echo "Boost Version: ${{ steps.buildParameters.outputs.boostTag }}"
+          echo "Boost Path: ${{ steps.buildParameters.outputs.boostPath }}"
+          echo "LibGit2 Version: ${{ steps.buildParameters.outputs.libgit2Tag }}"
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Clone Fritzing-App
+        uses: actions/checkout@v2
         with:
           repository: fritzing/fritzing-app
           path: fritzing-app
-          ref: '${{ steps.buildParameters.outputs.tag }}'
+          ref: '${{ steps.buildParameters.outputs.fritzingTag }}'
       
-      - uses: actions/checkout@v2
+      - name: Clone Fritzing-Parts
+        uses: actions/checkout@v2
         with:
           repository: fritzing/fritzing-parts
           path: fritzing-parts
+      
+      - name: Clone Boost
+        uses: actions/checkout@v2
+        with:
+          repository: boostorg/boost
+          path: '${{ steps.buildParameters.outputs.boostPath }}'
+          ref: '${{ steps.buildParameters.outputs.boostTag }}'
           
+      - name: Clone libgit2
+        uses: actions/checkout@v2
+        with:
+          repository: libgit2/libgit2
+          path: libgit2
+      
       - run: dir $ENV:GITHUB_WORKSPACE
+      
+
