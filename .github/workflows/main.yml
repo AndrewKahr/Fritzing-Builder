@@ -97,7 +97,7 @@ jobs:
       - name: Setup Boost
         shell: cmd
         run: |
-          cd '${{ steps.buildParameters.outputs.boostPath }}'
+          cd ${{ steps.buildParameters.outputs.boostPath }}
           bootstrap
           b2 headers
           cd %GITHUB_WORKSPACE%
