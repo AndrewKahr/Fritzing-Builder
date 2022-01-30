@@ -97,4 +97,9 @@ jobs:
           cmake --build .
           cd $ENV:GITHUB_WORKSPACE
 
-      - run: pwd
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      
+      - name: Show Disk Usage
+        if: always()
+        run: get-PSDrive
